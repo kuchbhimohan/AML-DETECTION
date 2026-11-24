@@ -1,0 +1,2 @@
+models/** -text
+*.parquet binary
