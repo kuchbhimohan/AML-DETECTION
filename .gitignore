@@ -24,3 +24,6 @@ mlflow.db
 Thumbs.db
 .vscode/
 .idea/
+
+# Optuna studies
+optuna.db

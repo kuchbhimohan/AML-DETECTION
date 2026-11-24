@@ -1,0 +1,101 @@
+{
+ "features": [
+  "s_out_cnt_1h",
+  "s_out_uniq_1h",
+  "s_out_cnt_24h",
+  "s_out_uniq_24h",
+  "s_out_cnt_7d",
+  "s_out_uniq_7d",
+  "s_out_usd_24h",
+  "s_out_usd_7d",
+  "s_amt_z_7d",
+  "s_amt_ratio_7d",
+  "s_hours_since_prev_out",
+  "r_in_cnt_1h",
+  "r_in_uniq_1h",
+  "r_in_cnt_24h",
+  "r_in_uniq_24h",
+  "r_in_cnt_7d",
+  "r_in_uniq_7d",
+  "r_in_usd_24h",
+  "s_in_cnt_24h",
+  "s_in_uniq_24h",
+  "s_in_usd_24h",
+  "r_out_cnt_24h",
+  "r_out_uniq_24h",
+  "s_passthrough_ratio_24h",
+  "pair_prev_cnt",
+  "pair_first_time",
+  "reverse_flow_7d",
+  "s_age_hours",
+  "r_age_hours",
+  "log_amount_usd",
+  "round_amount",
+  "is_ach",
+  "cross_bank",
+  "self_transfer",
+  "cross_currency",
+  "hour",
+  "payment_format",
+  "payment_currency"
+ ],
+ "categories": {
+  "payment_format": [
+   "ACH",
+   "Bitcoin",
+   "Cash",
+   "Cheque",
+   "Credit Card",
+   "Reinvestment",
+   "Wire"
+  ],
+  "payment_currency": [
+   "Australian Dollar",
+   "Bitcoin",
+   "Brazil Real",
+   "Canadian Dollar",
+   "Euro",
+   "Mexican Peso",
+   "Ruble",
+   "Rupee",
+   "Saudi Riyal",
+   "Shekel",
+   "Swiss Franc",
+   "UK Pound",
+   "US Dollar",
+   "Yen",
+   "Yuan"
+  ]
+ },
+ "negative_rate": 0.08,
+ "champion": "lgbm_monotone",
+ "constraint_cost_rel_pr_auc": 0.009523514456561744,
+ "monotone_constraints": {
+  "s_out_cnt_1h": 1,
+  "s_out_cnt_24h": 1,
+  "s_out_uniq_24h": 1,
+  "s_out_uniq_7d": 1,
+  "r_in_uniq_24h": 1,
+  "r_in_uniq_7d": 1,
+  "pair_prev_cnt": -1
+ },
+ "xgb_best_iteration": 784,
+ "best_params": {
+  "lgbm": {
+   "learning_rate": 0.022359698854299274,
+   "num_leaves": 66,
+   "min_child_samples": 219,
+   "feature_fraction": 0.6778325619780777,
+   "bagging_fraction": 0.9710736814376468,
+   "lambda_l2": 5.188869122224808
+  },
+  "xgb": {
+   "eta": 0.05573003550177858,
+   "max_depth": 9,
+   "min_child_weight": 17.494008773833386,
+   "subsample": 0.7646616568086777,
+   "colsample_bytree": 0.533258440653874,
+   "lambda": 0.0800696472188664
+  }
+ }
+}

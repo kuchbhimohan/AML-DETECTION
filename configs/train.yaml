@@ -22,6 +22,21 @@ compute:                     # laptop safety
 optuna:
   n_trials_per_batch: 10
   timeout_seconds: 300
+  storage: "sqlite:///optuna.db"   # studies persist, so short batches add up
+
+# Domain constraints: more counterparties / faster activity must never LOWER risk,
+# and a longer history between the same two accounts must never RAISE it.
+monotone_constraints:
+  s_out_cnt_1h: 1
+  s_out_cnt_24h: 1
+  s_out_uniq_24h: 1
+  s_out_uniq_7d: 1
+  r_in_uniq_24h: 1
+  r_in_uniq_7d: 1
+  pair_prev_cnt: -1
+
+# Keep the constrained model unless it costs more than this (relative PR-AUC on validation).
+max_constraint_cost: 0.03
 
 bootstrap:
   n_resamples: 1000
