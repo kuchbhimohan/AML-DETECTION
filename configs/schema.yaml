@@ -1,0 +1,21 @@
+# Maps a raw transactions file onto the project's standard column names.
+# To use a different dataset, change only the right-hand side.
+# Default: IBM Transactions for Anti-Money Laundering (HI-Small_Trans.csv).
+# Note: the IBM CSV has two columns named "Account"; pandas reads the second as "Account.1".
+
+dataset_name: ibm_aml_hi_small
+
+columns:
+  timestamp: "Timestamp"
+  from_bank: "From Bank"
+  from_account: "Account"
+  to_bank: "To Bank"
+  to_account: "Account.1"
+  amount_received: "Amount Received"
+  receiving_currency: "Receiving Currency"
+  amount_paid: "Amount Paid"
+  payment_currency: "Payment Currency"
+  payment_format: "Payment Format"
+  label: "Is Laundering"        # optional: set to null for unlabelled data
+
+timestamp_format: "%Y/%m/%d %H:%M"

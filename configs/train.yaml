@@ -1,0 +1,29 @@
+# Experiment settings. Every run reads this file and logs it to MLflow.
+
+seed: 42
+
+split:                       # time-based, by fraction of days
+  train: 0.60
+  val: 0.20
+  test: 0.20
+
+sampling:                    # case-control sampling for laptop-sized training data
+  negative_rate: 0.08        # keep 8% of normal transactions, all laundering ones
+
+alert_budgets: [0.005, 0.01, 0.02]   # fraction of transactions investigators can review
+
+compute:                     # laptop safety
+  n_jobs: 2
+
+optuna:
+  n_trials_per_batch: 10
+  timeout_seconds: 300
+
+bootstrap:
+  n_resamples: 1000
+  ci: 0.95
+
+mlflow:
+  tracking_uri: "sqlite:///mlflow.db"
+  experiment_name: "aml-transaction-monitoring"
+  registered_model_name: "aml-lgbm"
