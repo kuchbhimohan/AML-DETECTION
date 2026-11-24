@@ -12,6 +12,10 @@ sampling:                    # case-control sampling for laptop-sized training d
 
 alert_budgets: [0.005, 0.01, 0.02]   # fraction of transactions investigators can review
 
+# Features never used by any model.
+#  weekday: data covers only ~10 days, so weekday ≈ "which date" -> a time artefact, not behaviour.
+excluded_features: [weekday]
+
 compute:                     # laptop safety
   n_jobs: 2
 
