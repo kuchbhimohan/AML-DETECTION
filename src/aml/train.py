@@ -220,9 +220,24 @@ def final():
     print("wrote reports/boosting.md and models/")
 
 
+def ablate(drop: list[str]):
+    """Refit the champion's params WITHOUT some features; compare on VALIDATION."""
+    from aml.metrics import recall_at_budget
+    feats, train, vs, vf = load_data()
+    params = json.loads((MODELS_DIR / "model_meta.json").read_text())["best_params"]["lgbm"]
+    y = vf["label"].to_numpy(); out = {"dropped": drop, "evaluated_on": "validation (full)"}
+    for tag, fs in [("with", feats), ("without", [f for f in feats if f not in drop])]:
+        m = fit_lgbm(params, fs, train, vs, monotone=True); p = predict(m, vf[fs])
+        out[tag] = {"pr_auc": float(average_precision_score(y, p)), "recall_at_1pct": recall_at_budget(y, p, 0.01),
+                    "best_iteration": int(m.best_iteration)}
+        print(tag, out[tag])
+    (REPORTS_DIR / "ablation_age.json").write_text(json.dumps(out, indent=1))
+
+
 def main():
     ap = argparse.ArgumentParser()
     sub = ap.add_subparsers(dest="cmd", required=True)
+    ab = sub.add_parser("ablate"); ab.add_argument("--drop", nargs="+", required=True)
     t = sub.add_parser("tune"); t.add_argument("--model", choices=list(SPACES), required=True)
     t.add_argument("--trials", type=int, default=CFG["optuna"]["n_trials_per_batch"])
     t.add_argument("--limit", type=int, default=None, help="tiny subset for smoke tests")
@@ -230,6 +245,8 @@ def main():
     a = ap.parse_args()
     if a.cmd == "tune":
         tune(a.model, a.trials, a.limit)
+    elif a.cmd == "ablate":
+        ablate(a.drop)
     else:
         final()
 

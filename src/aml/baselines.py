@@ -13,6 +13,7 @@ Run:  uv run python -m aml.baselines
 from __future__ import annotations
 
 import time
+import warnings
 
 import matplotlib
 matplotlib.use("Agg")
@@ -39,6 +40,24 @@ BINARY = ["pair_first_time", "reverse_flow_7d", "round_amount", "is_ach", "cross
 # --------------------------------------------------------------------------- #
 # Feature preparation for the linear / tree-free models
 # --------------------------------------------------------------------------- #
+def vif_fast(Z: pd.DataFrame) -> pd.Series:
+    """Variance inflation factors, VIF_i = 1 / (1 - R²_i), where R²_i comes from
+    regressing column i on all the others. Computed from the Gram matrix with one
+    small least-squares solve per column (p×p), instead of p regressions on n rows.
+    Equivalent to statsmodels' variance_inflation_factor; perfectly collinear
+    columns get VIF = inf."""
+    X = Z.to_numpy(dtype=np.float64)
+    G = X.T @ X
+    out = np.empty(X.shape[1])
+    for i in range(X.shape[1]):
+        rest = np.delete(np.arange(X.shape[1]), i)
+        beta, *_ = np.linalg.lstsq(G[np.ix_(rest, rest)], G[rest, i], rcond=None)
+        ss_res = G[i, i] - G[i, rest] @ beta          # residual sum of squares
+        r2 = 1 - ss_res / G[i, i]
+        out[i] = np.inf if r2 >= 1 - 1e-12 else 1 / (1 - r2)
+    return pd.Series(out, index=Z.columns)
+
+
 class LinearPrep:
     """log1p for heavy-tailed counts/amounts, cyclic hour, one-hot payment format,
     standardisation (fitted on train only)."""
@@ -87,8 +106,7 @@ class LinearPrep:
         # 2) multicollinearity: iteratively drop the highest-VIF column until all VIF <= 10
         sub = Z.sample(min(60_000, len(Z)), random_state=0)
         while True:
-            with np.errstate(divide="ignore"):   # perfectly collinear columns give VIF = inf (expected)
-                vif = pd.Series([variance_inflation_factor(sub.values, i) for i in range(sub.shape[1])], index=sub.columns)
+            vif = vif_fast(sub)
             if vif.max() <= 10:
                 break
             worst = vif.idxmax(); self.dropped[worst] = f"VIF {vif.max():.1f} > 10"
