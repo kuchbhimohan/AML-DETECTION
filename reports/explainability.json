@@ -1,0 +1,256 @@
+{
+ "additivity_max_error": 5.1514348342607263e-14,
+ "importance_all": {
+  "pair_prev_cnt": 0.7951824345083399,
+  "payment_format": 0.3670895293879488,
+  "is_ach": 0.3103184690770167,
+  "s_hours_since_prev_out": 0.2992938517400587,
+  "log_amount_usd": 0.2611635066245824,
+  "s_age_hours": 0.2530366519733574,
+  "s_out_uniq_24h": 0.24289414758164615,
+  "s_out_cnt_1h": 0.19041680327619653,
+  "self_transfer": 0.14305770468395487,
+  "payment_currency": 0.11578802155793023,
+  "r_age_hours": 0.11329201125236185,
+  "s_out_uniq_7d": 0.10507238114543754,
+  "s_out_usd_7d": 0.0964340579227673,
+  "r_in_cnt_7d": 0.09429939962404002,
+  "s_out_uniq_1h": 0.09345565049180284,
+  "r_in_usd_24h": 0.07705044016105,
+  "s_amt_ratio_7d": 0.0770399222508865,
+  "s_out_cnt_24h": 0.06765110781892011,
+  "s_amt_z_7d": 0.06740728012688099,
+  "r_in_cnt_1h": 0.06673599966544641,
+  "s_out_cnt_7d": 0.06042910072475659,
+  "r_in_uniq_7d": 0.054790433516047246,
+  "s_in_uniq_24h": 0.051577870093574986,
+  "s_passthrough_ratio_24h": 0.05109570994652193,
+  "s_in_usd_24h": 0.05035083487269157,
+  "hour": 0.048267289582287445,
+  "pair_first_time": 0.04780009524619514,
+  "s_out_usd_24h": 0.04034351343007944,
+  "reverse_flow_7d": 0.037515260040847646,
+  "s_in_cnt_24h": 0.037011494831686025,
+  "cross_currency": 0.035733108580811135,
+  "r_in_cnt_24h": 0.03417921207037284,
+  "r_in_uniq_24h": 0.03398016414045267,
+  "r_out_cnt_24h": 0.02911294785853194,
+  "cross_bank": 0.02725111812319686,
+  "r_in_uniq_1h": 0.019971175898538834,
+  "r_out_uniq_24h": 0.018204554724734097,
+  "round_amount": 0.0
+ },
+ "importance_laundering": {
+  "is_ach": 2.0718634650911745,
+  "payment_format": 1.7916080234476248,
+  "pair_prev_cnt": 1.5944672006343354,
+  "log_amount_usd": 0.8743787647257864,
+  "s_hours_since_prev_out": 0.5664309159345181,
+  "s_age_hours": 0.5183984854915705,
+  "r_in_cnt_1h": 0.2631604179059147,
+  "r_age_hours": 0.26293525665765083,
+  "r_in_uniq_7d": 0.23521727048040414,
+  "self_transfer": 0.2313020507969777,
+  "s_out_uniq_24h": 0.21689978534598295,
+  "pair_first_time": 0.20939654018994205,
+  "s_out_cnt_1h": 0.1692071728500145,
+  "payment_currency": 0.1682094125335068,
+  "s_out_usd_7d": 0.16005315083694868,
+  "r_in_uniq_1h": 0.13445317662607043,
+  "s_out_uniq_7d": 0.1267260804464398,
+  "s_in_usd_24h": 0.1253935515431951,
+  "r_in_cnt_7d": 0.12450279274580495,
+  "s_out_cnt_7d": 0.12332387251705036,
+  "reverse_flow_7d": 0.10899650546477956,
+  "hour": 0.08974050652766911,
+  "r_in_usd_24h": 0.08776005045033938,
+  "cross_currency": 0.08684859284679271,
+  "s_out_uniq_1h": 0.08534958375241376,
+  "r_in_uniq_24h": 0.0717580865768379,
+  "s_amt_z_7d": 0.06872590210586371,
+  "s_amt_ratio_7d": 0.06301918465780333,
+  "s_out_usd_24h": 0.06266775894370483,
+  "s_in_uniq_24h": 0.062307506886301024,
+  "s_out_cnt_24h": 0.057269465918401964,
+  "s_passthrough_ratio_24h": 0.054713527725709483,
+  "s_in_cnt_24h": 0.0506353360440017,
+  "r_out_cnt_24h": 0.046292410799441214,
+  "cross_bank": 0.041409869817757995,
+  "r_in_cnt_24h": 0.030863652594374267,
+  "r_out_uniq_24h": 0.025923729611378673,
+  "round_amount": 0.0
+ },
+ "direction": {
+  "s_out_cnt_1h": 0.11290638850735996,
+  "s_out_uniq_1h": -0.3024202360032109,
+  "s_out_cnt_24h": 0.21131003509676455,
+  "s_out_uniq_24h": 0.3450792753166779,
+  "s_out_cnt_7d": -0.27094118318584526,
+  "s_out_uniq_7d": 0.5928570584956122,
+  "s_out_usd_24h": -0.2309125223724279,
+  "s_out_usd_7d": 0.6130587176328857,
+  "s_amt_z_7d": 0.6774745683827068,
+  "s_amt_ratio_7d": -0.3052221847482372,
+  "s_hours_since_prev_out": 0.7802120107903479,
+  "r_in_cnt_1h": -0.8965824426499873,
+  "r_in_uniq_1h": -0.7295670740810926,
+  "r_in_cnt_24h": -0.5411885316196084,
+  "r_in_uniq_24h": 0.9067845533479302,
+  "r_in_cnt_7d": 0.35674524684443076,
+  "r_in_uniq_7d": 0.844882685734718,
+  "r_in_usd_24h": -0.6112481365501418,
+  "s_in_cnt_24h": -0.05940449044814956,
+  "s_in_uniq_24h": 0.619492104727756,
+  "s_in_usd_24h": 0.06841285341229092,
+  "r_out_cnt_24h": 0.5268737429016737,
+  "r_out_uniq_24h": 0.3878625501393274,
+  "s_passthrough_ratio_24h": -0.21782219815033238,
+  "pair_prev_cnt": -0.6141075441046442,
+  "pair_first_time": 0.47626121564388124,
+  "reverse_flow_7d": 0.2671245871452827,
+  "s_age_hours": 0.013631182661851595,
+  "r_age_hours": -0.0015604103078364067,
+  "log_amount_usd": 0.7176497716511293,
+  "round_amount": 0.0,
+  "is_ach": 0.6686606646630998,
+  "cross_bank": 0.3383191623332044,
+  "self_transfer": -0.2457679368440116,
+  "cross_currency": -0.2064475124296659,
+  "hour": -0.0727536448170371
+ },
+ "logreg_agreement": {
+  "n": 16,
+  "agree": "11"
+ },
+ "monotone_ok": {
+  "s_out_cnt_1h": true,
+  "s_out_cnt_24h": true,
+  "s_out_uniq_24h": true,
+  "s_out_uniq_7d": true,
+  "r_in_uniq_24h": true,
+  "r_in_uniq_7d": true,
+  "pair_prev_cnt": true
+ },
+ "examples": [
+  {
+   "probability": 0.9666184658703076,
+   "log_odds": 5.891529630753736,
+   "reasons": [
+    {
+     "feature": "payment_method",
+     "value": {
+      "payment_format": "ACH",
+      "is_ach": 1.0
+     },
+     "contribution": 6.06131566487046,
+     "reason": "Payment format: ACH"
+    },
+    {
+     "feature": "pair_history",
+     "value": {
+      "pair_prev_cnt": 0.0,
+      "pair_first_time": 1.0
+     },
+     "contribution": 2.4335406250486686,
+     "reason": "First-ever payment from this sender to this receiver"
+    },
+    {
+     "feature": "log_amount_usd",
+     "value": 9.384575843811035,
+     "contribution": 1.8033324001798856,
+     "reason": "Amount \u2248 $11,902"
+    }
+   ]
+  },
+  {
+   "probability": 0.9583588187436601,
+   "log_odds": 5.661861290337363,
+   "reasons": [
+    {
+     "feature": "payment_method",
+     "value": {
+      "payment_format": "ACH",
+      "is_ach": 1.0
+     },
+     "contribution": 6.027387342402644,
+     "reason": "Payment format: ACH"
+    },
+    {
+     "feature": "log_amount_usd",
+     "value": 9.400975227355957,
+     "contribution": 1.8029726488121471,
+     "reason": "Amount \u2248 $12,099"
+    },
+    {
+     "feature": "pair_history",
+     "value": {
+      "pair_prev_cnt": 0.0,
+      "pair_first_time": 1.0
+     },
+     "contribution": 1.5395996073230132,
+     "reason": "First-ever payment from this sender to this receiver"
+    }
+   ]
+  },
+  {
+   "probability": 0.9558830289403796,
+   "log_odds": 5.601519655500699,
+   "reasons": [
+    {
+     "feature": "payment_method",
+     "value": {
+      "payment_format": "ACH",
+      "is_ach": 1.0
+     },
+     "contribution": 5.7645368581599215,
+     "reason": "Payment format: ACH"
+    },
+    {
+     "feature": "pair_history",
+     "value": {
+      "pair_prev_cnt": 0.0,
+      "pair_first_time": 1.0
+     },
+     "contribution": 2.6134285425897943,
+     "reason": "First-ever payment from this sender to this receiver"
+    },
+    {
+     "feature": "log_amount_usd",
+     "value": 9.577631950378418,
+     "contribution": 1.6343138697553843,
+     "reason": "Amount \u2248 $14,437"
+    }
+   ]
+  },
+  {
+   "probability": 0.34986969462448286,
+   "log_odds": 1.9061166157907756,
+   "reasons": [
+    {
+     "feature": "payment_method",
+     "value": {
+      "payment_format": "ACH",
+      "is_ach": 1.0
+     },
+     "contribution": 4.133312377053088,
+     "reason": "Payment format: ACH"
+    },
+    {
+     "feature": "pair_history",
+     "value": {
+      "pair_prev_cnt": 0.0,
+      "pair_first_time": 1.0
+     },
+     "contribution": 2.1966943773376646,
+     "reason": "First-ever payment from this sender to this receiver"
+    },
+    {
+     "feature": "log_amount_usd",
+     "value": 9.504323959350586,
+     "contribution": 1.5959328908135997,
+     "reason": "Amount \u2248 $13,417"
+    }
+   ]
+  }
+ ]
+}
