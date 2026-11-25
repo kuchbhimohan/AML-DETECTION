@@ -88,3 +88,9 @@ def test_fast_vif_matches_statsmodels():
     assert np.allclose(vif_fast(Z).values, ref, rtol=1e-3)
     Z[6] = Z[0] + Z[1]                                                # perfectly collinear
     assert np.isinf(vif_fast(Z)[6])
+
+
+def test_score_file_names_are_windows_safe():
+    from aml.extra_models import _slug
+    s = _slug("Imbalance: SMOTE to 10%")
+    assert s == "imbalance_smote_to_10" and not any(c in s for c in ':*?"<>|/\ ')
