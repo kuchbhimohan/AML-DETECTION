@@ -17,8 +17,12 @@ CSS = f"""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
 html, body, [class*="css"], .stMarkdown, .stText, button, input, textarea, select {{ font-family: 'Inter', sans-serif !important; }}
-#MainMenu, footer, header [data-testid="stToolbar"] {{ visibility: hidden; }}
+/* Hide Streamlit's menu/deploy chrome but KEEP the sidebar toggle (it lives in the toolbar). */
+#MainMenu, footer, [data-testid="stMainMenu"], [data-testid="stAppDeployButton"],
+[data-testid="stToolbarActions"], [data-testid="stStatusWidget"] {{ display: none !important; }}
 [data-testid="stHeader"] {{ background: transparent; }}
+[data-testid="stExpandSidebarButton"] {{ visibility: visible !important; background: {C['panel2']};
+  border: 1px solid rgba(124,108,255,.55); border-radius: 10px; color: {C['text']}; }}
 .block-container {{ padding-top: 1.6rem; padding-bottom: 3rem; max-width: 1400px; }}
 [data-testid="stAppViewContainer"] {{
   background: radial-gradient(1200px 600px at 85% -10%, rgba(124,108,255,.16), transparent 60%),

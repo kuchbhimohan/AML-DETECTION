@@ -38,6 +38,8 @@ def load():
 
 
 alerts, R, CURVES, PROFILE, EXTRA, EXPL, ABL, META, CAL_BINS = load()
+# reason types (feature keys of each alert's top-3 reasons), aligned with alerts.index
+REASON_TYPES = pd.Series([[r["feature"] for r in json.loads(s)] for s in alerts["reasons_json"]], index=alerts.index)
 N_TX, N_POS, DAYS = R["meta"]["test_rows"], R["meta"]["test_laundering"], CURVES["days"]
 TX_DAY, POS_DAY = N_TX / DAYS, N_POS / DAYS
 
@@ -59,7 +61,9 @@ NICE = {"payment_method": "Payment format (ACH etc.)", "pair_history": "History 
         "r_in_uniq_7d": "Receiver distinct payers, 7d", "r_in_usd_24h": "Receiver received, 24h", "r_out_cnt_24h": "Receiver onward payments, 24h",
         "r_out_uniq_24h": "Receiver distinct payees, 24h", "s_passthrough_ratio_24h": "Pass-through ratio, 24h",
         "reverse_flow_7d": "Money flowed back (7d)", "round_amount": "Round amount", "cross_bank": "Cross-bank",
-        "self_transfer": "Self-transfer", "cross_currency": "Cross-currency", "hour": "Hour of day"}
+        "self_transfer": "Self-transfer", "cross_currency": "Cross-currency", "hour": "Hour of day",
+        "is_ach": "ACH flag", "payment_format": "Payment format", "pair_prev_cnt": "Earlier payments in pair",
+        "pair_first_time": "First payment in pair"}
 LOG_TICKS = [1e-4, 3e-4, 1e-3, 3e-3, 1e-2, 3e-2, 1e-1]
 
 
@@ -164,13 +168,16 @@ def alert_queue():
     bands = f1.multiselect("Risk band", ["High", "Medium"], default=["High", "Medium"])
     fmts = f2.multiselect("Payment format", sorted(alerts["payment_format"].unique()))
     min_p = f3.slider("Min. probability", 0.0, 1.0, 0.0, 0.01, format="%.2f")
-    q = f4.text_input("Search reasons", placeholder="e.g. fan-out, ACH, first-ever")
+    type_counts = pd.Series([t for ts in REASON_TYPES for t in ts]).value_counts()
+    picked = f4.multiselect("Flagged because of", list(type_counts.index),
+                            format_func=lambda t: f"{NICE.get(t, t)} ({type_counts[t]:,})",
+                            placeholder="any reason")
     df = alerts[alerts["band"].isin(bands) & (alerts["p_cal"] >= min_p)]
     if fmts:
         df = df[df["payment_format"].isin(fmts)]
-    if q:
-        m = df[["reason_1", "reason_2", "reason_3"]].apply(lambda s: s.str.contains(q, case=False, na=False)).any(axis=1)
-        df = df[m]
+    if picked:
+        keep = [bool(set(REASON_TYPES[i]) & set(picked)) for i in df.index]
+        df = df[keep]
 
     k1, k2, k3, k4 = st.columns(4)
     with k1: ui.kpi("Alerts shown", f"{len(df):,}", f"of {len(alerts):,} in queue", C["violet"])
@@ -356,18 +363,17 @@ def model_lab():
             dd = diff.get(f"{name} - {CHAMP}", {}).get("recall_at_1pct")
             sig = "champion" if dd is None else ("tie" if dd[1] <= 0 <= dd[2] else ("better" if dd[1] > 0 else "worse"))
             rows.append({"Model": name, "PR-AUC": x["pr_auc"], "Recall @1%": x["recall_at_1pct"],
-                         "Δ vs champion": np.nan if dd is None else dd[0], "95% CI": "—" if dd is None else f"[{dd[1]:+.3f}, {dd[2]:+.3f}]",
+                         "Δ vs champion": "—" if dd is None else f"{dd[0]:+.3f}", "95% CI": "—" if dd is None else f"[{dd[1]:+.3f}, {dd[2]:+.3f}]",
                          "Verdict": sig})
         lr = R["test_metrics"][LOGREG]; dl = R["bootstrap_diff"][f"{CHAMP} - {LOGREG}"]["recall_at_1pct"]
-        rows.append({"Model": LOGREG, "PR-AUC": lr["pr_auc"], "Recall @1%": lr["recall_at_1pct"], "Δ vs champion": -dl[0],
+        rows.append({"Model": LOGREG, "PR-AUC": lr["pr_auc"], "Recall @1%": lr["recall_at_1pct"], "Δ vs champion": f"{-dl[0]:+.3f}",
                      "95% CI": f"[{-dl[2]:+.3f}, {-dl[1]:+.3f}]", "Verdict": "worse"})
         tab = pd.DataFrame(rows)
         col = {"better": C["cyan"], "tie": C["muted"], "worse": C["red"], "champion": C["violet"]}
         st.dataframe(tab.style.map(lambda v: f"color:{col.get(v, C['text'])}; font-weight:700", subset=["Verdict"]),
                      hide_index=True, width="stretch",
                      column_config={"PR-AUC": st.column_config.NumberColumn(format="%.3f"),
-                                    "Recall @1%": st.column_config.ProgressColumn(min_value=0, max_value=1, format="percent"),
-                                    "Δ vs champion": st.column_config.NumberColumn(format="%+.3f")})
+                                    "Recall @1%": st.column_config.ProgressColumn(min_value=0, max_value=1, format="percent")})
         dlg = R["delong"]["champion_vs_logreg"]
         st.markdown(f"<div class='note'>Paired Poisson bootstrap (CI including 0 = tie). Champion vs logistic: DeLong z = {dlg['z']:.2f}, "
                     f"p = {dlg['p_value']:.1e}; McNemar p = {R['mcnemar_1pct_on_laundering']['p_value']:.1e}. "
@@ -419,7 +425,7 @@ def model_lab():
         l, r = st.columns([1.3, 1])
         with l:
             p = pd.Series(dr["feature_psi_top10"])[::-1]
-            fig = go.Figure(go.Bar(x=p.values, y=p.index, orientation="h",
+            fig = go.Figure(go.Bar(x=p.values, y=[NICE.get(f, f) for f in p.index], orientation="h",
                                    marker_color=[C["red"] if v > .25 else C["amber"] if v > .1 else C["green"] for v in p.values]))
             fig.add_vline(x=0.1, line=dict(color=C["amber"], dash="dot")); fig.add_vline(x=0.25, line=dict(color=C["red"], dash="dot"))
             fig.update_xaxes(type="log", title="PSI train → test (log)")
