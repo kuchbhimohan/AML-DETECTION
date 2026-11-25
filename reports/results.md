@@ -26,6 +26,19 @@
 
 - Brier: raw 0.000700 · isotonic (fit on validation) 0.000683 · constant-rate baseline 0.001107
 - Mean predicted: raw 0.099%, isotonic 0.121%; actual 0.111%
+
+Calibration methods compared (all fitted on validation, scored on test; lower is better for Brier, log-loss and ECE). ECE uses log-spaced probability bins because almost all probabilities are tiny.
+
+| Method | Brier | Log-loss | ECE | Mean predicted |
+|---|---|---|---|---|
+| Constant (validation base rate) | 0.001107 | 0.00865 | 0.000035 | 0.107% |
+| Raw (prior-corrected) | 0.000700 | 0.00375 | 0.000374 | 0.099% |
+| Platt scaling (fit on val) | 0.000704 | 0.00377 | 0.000381 | 0.111% |
+| Isotonic (fit on val) | 0.000683 | 0.00375 | 0.000240 | 0.121% |
+
+- Platt: calibrated logit = 0.947 × model logit -0.053 (slope < 1 means the raw model is over-confident at the extremes).
+- Caveat: a constant prediction can score a near-perfect ECE (it is right *on average*) while having no ability to rank risk. Calibration metrics must be read together with Brier/log-loss and ranking metrics.
+- Operating points (§4) use isotonic calibration, chosen before this comparison was added.
 - Figure: `figures/step7_reliability.png`
 
 ## 4. Operating points
@@ -91,4 +104,4 @@ Isotonic calibration is a step function, so nearby thresholds can give identical
 
 Age partly reflects 'time since the data starts' (only 10 days observed), so it is a known limitation. Removing it lowers PR-AUC but leaves recall at the 1% alert budget almost unchanged, so the headline business result does not rely on it.
 
-_Runtime: 202.6s._
+_Runtime: 135.3s._

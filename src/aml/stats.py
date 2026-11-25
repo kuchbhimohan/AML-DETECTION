@@ -130,6 +130,34 @@ def psi(expected, actual, bins: int = 10, w_expected=None) -> float:
 
 
 # --------------------------------------------------------------------------- #
+# Calibration
+# --------------------------------------------------------------------------- #
+CAL_EDGES = np.array([0, 1e-4, 3e-4, 1e-3, 3e-3, 1e-2, 3e-2, 0.1, 0.3, 1.0000001])
+
+
+def expected_calibration_error(y, p, edges=CAL_EDGES) -> float:
+    """ECE = Σ_bins (share of transactions in bin) · |mean predicted − observed rate|.
+    Log-spaced bins, because almost all probabilities here are tiny (base rate ~0.1%)."""
+    y = np.asarray(y, dtype=np.float64); p = np.asarray(p, dtype=np.float64)
+    b = np.clip(np.digitize(p, edges) - 1, 0, len(edges) - 2)
+    n = np.bincount(b, minlength=len(edges) - 1)
+    sp = np.bincount(b, weights=p, minlength=len(edges) - 1)
+    sy = np.bincount(b, weights=y, minlength=len(edges) - 1)
+    m = n > 0
+    return float((np.abs(sp[m] - sy[m])).sum() / len(y))
+
+
+def platt_fit(p_val, y_val):
+    """Platt scaling on the log-odds of the model's probability: returns a function p -> calibrated p."""
+    from sklearn.linear_model import LogisticRegression
+    def logit(p):
+        p = np.clip(np.asarray(p, dtype=np.float64), 1e-12, 1 - 1e-12)
+        return np.log(p / (1 - p)).reshape(-1, 1)
+    lr = LogisticRegression(C=1e6, max_iter=1000).fit(logit(p_val), y_val)   # ~unpenalised
+    return lambda p: lr.predict_proba(logit(p))[:, 1], (float(lr.coef_[0, 0]), float(lr.intercept_[0]))
+
+
+# --------------------------------------------------------------------------- #
 def wilson_interval(k: int, n: int, ci: float = 0.95) -> tuple[float, float]:
     if n == 0:
         return (np.nan, np.nan)

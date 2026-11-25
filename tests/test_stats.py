@@ -94,3 +94,23 @@ def test_score_file_names_are_windows_safe():
     from aml.extra_models import _slug
     s = _slug("Imbalance: SMOTE to 10%")
     assert s == "imbalance_smote_to_10" and not any(c in s for c in ':*?"<>|/\ ')
+
+
+def test_ece_small_when_calibrated_large_when_inflated():
+    from aml.stats import expected_calibration_error
+    rng = np.random.default_rng(0)
+    p = rng.beta(0.5, 400, 300_000)                      # tiny probabilities, like AML
+    y = (rng.random(len(p)) < p).astype(int)
+    good = expected_calibration_error(y, p)
+    bad = expected_calibration_error(y, np.clip(p * 10, 0, 1))   # 10x over-confident
+    assert good < 2e-4 and bad > 10 * good
+
+
+def test_platt_fixes_systematic_overconfidence():
+    from aml.stats import expected_calibration_error, platt_fit
+    rng = np.random.default_rng(1)
+    p = rng.beta(0.5, 400, 200_000); y = (rng.random(len(p)) < p).astype(int)
+    inflated = np.clip(p * 10, 0, 0.999)
+    f, _ = platt_fit(inflated[:100_000], y[:100_000])      # fit on "validation" half
+    assert expected_calibration_error(y[100_000:], f(inflated[100_000:])) < \
+           0.3 * expected_calibration_error(y[100_000:], inflated[100_000:])

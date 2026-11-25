@@ -21,14 +21,15 @@ import pandas as pd
 import statsmodels.api as sm
 import xgboost as xgb
 from sklearn.isotonic import IsotonicRegression
-from sklearn.metrics import brier_score_loss, precision_recall_curve
+from sklearn.metrics import brier_score_loss, log_loss, precision_recall_curve
 
 from aml.baselines import LinearPrep
 from aml.config import PROJECT_ROOT, REPORTS_DIR, load_train_config
 from aml.data import CATEGORICAL, align_categories, load_split
 from aml.metrics import _top_k_mask, gains_curve, ranking_metrics
 from aml.sampling import correct_probability
-from aml.stats import delong_test, mcnemar_test, poisson_bootstrap, psi, wilson_interval
+from aml.stats import (expected_calibration_error, delong_test, mcnemar_test, platt_fit, poisson_bootstrap,
+                       psi, wilson_interval)
 from aml.tracking import setup_mlflow
 
 CFG = load_train_config()
@@ -146,12 +147,24 @@ def main():
 
     _tick("DeLong + McNemar")
     # 4) calibration: isotonic fitted on VALIDATION, applied to test
+    #    + Platt scaling (also fitted on validation) for comparison. Operating points below keep
+    #    using isotonic, which was chosen before this comparison was added.
     iso = IsotonicRegression(out_of_bounds="clip", y_min=0, y_max=1).fit(sv[CHAMP], yv)
     p_raw = st[CHAMP]; p_cal = iso.predict(p_raw)
+    platt, (a_coef, b_int) = platt_fit(sv[CHAMP], yv); p_platt = platt(p_raw)
+    const = np.full(len(yt), yv.mean())
+    cal_methods = {"Constant (validation base rate)": const, "Raw (prior-corrected)": p_raw,
+                   "Platt scaling (fit on val)": p_platt, "Isotonic (fit on val)": p_cal}
     R_["calibration"] = {"brier_raw": float(brier_score_loss(yt, p_raw)), "brier_isotonic": float(brier_score_loss(yt, p_cal)),
-                         "brier_constant_baseline": float(brier_score_loss(yt, np.full(len(yt), yv.mean()))),
+                         "brier_constant_baseline": float(brier_score_loss(yt, const)),
                          "mean_pred_raw": float(p_raw.mean()), "mean_pred_isotonic": float(p_cal.mean()),
-                         "actual_rate": float(yt.mean())}
+                         "actual_rate": float(yt.mean()),
+                         "platt_params": {"slope_on_logit": a_coef, "intercept": b_int},
+                         "methods": {k: {"brier": float(brier_score_loss(yt, v)),
+                                         "log_loss": float(log_loss(yt, np.clip(v, 1e-12, 1 - 1e-12))),
+                                         "ece": expected_calibration_error(yt, v), "mean_pred": float(v.mean())}
+                                     for k, v in cal_methods.items()}}
+    CAL_CURVES = {"raw (prior-corrected)": p_raw, "Platt (fit on val)": p_platt, "isotonic (fit on val)": p_cal}
 
     # 5) operating points
     #   a) best-F1 threshold chosen on validation (calibrated) -> applied to test
@@ -202,7 +215,7 @@ def main():
     R_["meta"]["runtime_seconds"] = round(time.time() - t_start, 1)
 
     _tick("patterns + tail")
-    _figures(yt, st, p_raw, p_cal, R_)
+    _figures(yt, st, CAL_CURVES, R_)
     _write(R_)
     setup_mlflow()
     with mlflow.start_run(run_name="final_evaluation_test"):
@@ -215,7 +228,7 @@ def main():
 
 
 # --------------------------------------------------------------------------- #
-def _figures(yt, st, p_raw, p_cal, R_):
+def _figures(yt, st, cal_curves, R_):
     FIG.mkdir(parents=True, exist_ok=True)
     fig, ax = plt.subplots(figsize=(6.5, 4.5))
     for m in [CHAMP, "Logistic regression", "Rules (ACH, amount)"]:
@@ -229,7 +242,7 @@ def _figures(yt, st, p_raw, p_cal, R_):
 
     edges = np.array([0, 1e-4, 3e-4, 1e-3, 3e-3, 1e-2, 3e-2, 0.1, 0.3, 1.0001])
     fig, ax = plt.subplots(figsize=(5.5, 5))
-    for p, lab in [(p_raw, "raw (prior-corrected)"), (p_cal, "isotonic (fit on val)")]:
+    for lab, p in cal_curves.items():
         b = np.digitize(p, edges) - 1; xs, ys = [], []
         for i in np.unique(b):
             m = b == i
@@ -301,6 +314,16 @@ def _write(R_):
           f"- Brier: raw {cal['brier_raw']:.6f} · isotonic (fit on validation) {cal['brier_isotonic']:.6f} · "
           f"constant-rate baseline {cal['brier_constant_baseline']:.6f}",
           f"- Mean predicted: raw {_rate(cal['mean_pred_raw'])}, isotonic {_rate(cal['mean_pred_isotonic'])}; actual {_rate(cal['actual_rate'])}",
+          "", "Calibration methods compared (all fitted on validation, scored on test; lower is better for "
+          "Brier, log-loss and ECE). ECE uses log-spaced probability bins because almost all probabilities are tiny.", "",
+          "| Method | Brier | Log-loss | ECE | Mean predicted |", "|---|---|---|---|---|",
+          *[f"| {k} | {v['brier']:.6f} | {v['log_loss']:.5f} | {v['ece']:.6f} | {_rate(v['mean_pred'])} |"
+            for k, v in cal["methods"].items()],
+          "", f"- Platt: calibrated logit = {cal['platt_params']['slope_on_logit']:.3f} × model logit "
+              f"{cal['platt_params']['intercept']:+.3f} (slope < 1 means the raw model is over-confident at the extremes).",
+          "- Caveat: a constant prediction can score a near-perfect ECE (it is right *on average*) while having no "
+          "ability to rank risk. Calibration metrics must be read together with Brier/log-loss and ranking metrics.",
+          "- Operating points (§4) use isotonic calibration, chosen before this comparison was added.",
           "- Figure: `figures/step7_reliability.png`", ""]
     f = R_["f1_operating_point"]
     L += ["## 4. Operating points", "",

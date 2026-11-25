@@ -4,7 +4,7 @@
   "test_laundering": 956,
   "test_period": "2022-09-09 00:00:00 \u2192 2022-09-10 23:59:00",
   "bootstrap_resamples": 1000,
-  "runtime_seconds": 202.6
+  "runtime_seconds": 135.3
  },
  "test_metrics": {
   "LightGBM monotone (champion)": {
@@ -238,7 +238,37 @@
   "brier_constant_baseline": 0.0011068041682174166,
   "mean_pred_raw": 0.000990860899640302,
   "mean_pred_isotonic": 0.001213594788423948,
-  "actual_rate": 0.0011080306725143488
+  "actual_rate": 0.0011080306725143488,
+  "platt_params": {
+   "slope_on_logit": 0.9467347668797353,
+   "intercept": -0.05256204417205519
+  },
+  "methods": {
+   "Constant (validation base rate)": {
+    "brier": 0.0011068041682174166,
+    "log_loss": 0.008648321355379334,
+    "ece": 3.503818344950735e-05,
+    "mean_pred": 0.0010729924890525763
+   },
+   "Raw (prior-corrected)": {
+    "brier": 0.0007004458995206652,
+    "log_loss": 0.0037506900876919155,
+    "ece": 0.00037383486456727956,
+    "mean_pred": 0.000990860899640302
+   },
+   "Platt scaling (fit on val)": {
+    "brier": 0.0007044103758032651,
+    "log_loss": 0.0037729036549860643,
+    "ece": 0.00038127031409376436,
+    "mean_pred": 0.0011092756713540991
+   },
+   "Isotonic (fit on val)": {
+    "brier": 0.0006833678579551593,
+    "log_loss": 0.0037513103144261456,
+    "ece": 0.00024010238649688765,
+    "mean_pred": 0.001213594788423948
+   }
+  }
  },
  "f1_operating_point": {
   "threshold_from_val": 0.3,
