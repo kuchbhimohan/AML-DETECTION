@@ -7,7 +7,11 @@ Data: app/data/ (built by `uv run python -m aml.demo_data`); every number comes 
 from __future__ import annotations
 
 import json
+import sys
 from pathlib import Path
+
+# On Streamlit Cloud the `aml` package is not pip-installed: make src/ importable.
+sys.path.append(str(Path(__file__).resolve().parents[1] / "src"))
 
 import numpy as np
 import pandas as pd

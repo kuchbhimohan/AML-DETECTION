@@ -1,0 +1,10 @@
+# Dashboard-only dependencies (used by Streamlit Community Cloud).
+# The full training stack lives in pyproject.toml / uv.lock.
+streamlit==1.67.0
+plotly==7.2.0
+pandas==3.1.1
+numpy==2.5.5
+pyarrow==26.0.1
+lightgbm==4.7.0
+matplotlib==3.11.2
+pyyaml==6.0.4
