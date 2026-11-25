@@ -18,8 +18,9 @@ CSS = f"""
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
 html, body, [class*="css"], .stMarkdown, .stText, button, input, textarea, select {{ font-family: 'Inter', sans-serif !important; }}
 /* Hide Streamlit's menu/deploy chrome but KEEP the sidebar toggle (it lives in the toolbar). */
+/* stStatusWidget ("Running...") stays visible: on a slow server it tells visitors the app is busy. */
 #MainMenu, footer, [data-testid="stMainMenu"], [data-testid="stAppDeployButton"],
-[data-testid="stToolbarActions"], [data-testid="stStatusWidget"] {{ display: none !important; }}
+[data-testid="stToolbarActions"] {{ display: none !important; }}
 [data-testid="stHeader"] {{ background: transparent; }}
 [data-testid="stExpandSidebarButton"] {{ visibility: visible !important; background: {C['panel2']};
   border: 1px solid rgba(124,108,255,.55); border-radius: 10px; color: {C['text']}; }}

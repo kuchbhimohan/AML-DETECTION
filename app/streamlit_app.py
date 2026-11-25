@@ -271,8 +271,9 @@ def investigate():
     c1, c2 = st.columns([1.25, 1])
     with c1:
         ui.section("Full explanation", "Every feature's push on the score, in log-odds (red raises risk, green lowers it).")
-        GROUPS, prepare, shap_values = explainer()
-        contrib, base = shap_values(prepare(alerts[alerts["rank"] == rank]))
+        with st.spinner("Loading the model for live explanations (first visit only, up to ~30 s on the free server)…"):
+            GROUPS, prepare, shap_values = explainer()
+            contrib, base = shap_values(prepare(alerts[alerts["rank"] == rank]))
         s = contrib.iloc[0]
         for g_name, members in GROUPS.items():
             s[g_name] = s[members].sum(); s = s.drop(members)
@@ -291,7 +292,7 @@ def investigate():
         pcts = {labels[f]: float(np.searchsorted(PROFILE[f], row[f], side="right") - 1) for f in PROFILE}
         items = sorted(pcts.items(), key=lambda kv: kv[1])
         fig = go.Figure(go.Bar(x=[v for _, v in items], y=[k for k, _ in items], orientation="h",
-                               marker=dict(color=[v for _, v in items], colorscale=[[0, C["blue"]], [.5, C["violet"]], [1, C["red"]]], cmin=0, cmax=100),
+                               marker=dict(color=[C["red"] if v >= 90 else C["violet"] if v >= 50 else C["blue"] for _, v in items]),
                                hovertemplate="%{y}: %{x:.0f}th percentile<extra></extra>"))
         fig.add_vline(x=50, line=dict(color=C["muted"], dash="dot"))
         fig.update_xaxes(range=[0, 100], title="percentile vs normal transfers")

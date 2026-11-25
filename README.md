@@ -6,7 +6,7 @@
 Leak-free behavioural features · monotone LightGBM · statistical evaluation (bootstrap, DeLong, McNemar, PSI) ·
 isotonic calibration · SHAP reason codes · MLflow · FastAPI · Streamlit dashboard · 79 tests.
 
-**Live demo:** _link added after deployment_ &nbsp;·&nbsp; **Data:** [IBM Transactions for Anti-Money Laundering (HI-Small)](https://www.kaggle.com/datasets/ealtman2019/ibm-transactions-for-anti-money-laundering-aml)
+**Live demo:** [sentinel-aml.streamlit.app](https://sentinel-aml.streamlit.app/) &nbsp;·&nbsp; **Data:** [IBM Transactions for Anti-Money Laundering (HI-Small)](https://www.kaggle.com/datasets/ealtman2019/ibm-transactions-for-anti-money-laundering-aml)
 
 ---
 
