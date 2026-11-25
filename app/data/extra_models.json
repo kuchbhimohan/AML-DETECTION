@@ -1,0 +1,423 @@
+{
+ "metrics": {
+  "LightGBM monotone (champion)": {
+   "pr_auc": 0.5344135862530865,
+   "roc_auc": 0.9809458264696012,
+   "gini": 0.9618916529392023,
+   "base_rate": 0.0011080306725143488,
+   "recall_at_0_5pct": 0.6673640167364017,
+   "precision_at_0_5pct": 0.14789058878071396,
+   "recall_at_1pct": 0.7489539748953975,
+   "precision_at_1pct": 0.08298562818729717,
+   "recall_at_2pct": 0.7782426778242678,
+   "precision_at_2pct": 0.043115438108484005
+  },
+  "XGBoost monotone": {
+   "pr_auc": 0.5192403192085184,
+   "roc_auc": 0.9809589139812658,
+   "gini": 0.9619178279625316,
+   "base_rate": 0.0011080306725143488,
+   "recall_at_0_5pct": 0.6684100418410042,
+   "precision_at_0_5pct": 0.14812239221140472,
+   "recall_at_1pct": 0.7364016736401674,
+   "precision_at_1pct": 0.08159480760315253,
+   "recall_at_2pct": 0.7688284518828452,
+   "precision_at_2pct": 0.04259388038942977
+  },
+  "Extra Trees": {
+   "pr_auc": 0.44042576377115217,
+   "roc_auc": 0.9760593394599961,
+   "gini": 0.9521186789199922,
+   "base_rate": 0.0011080306725143488,
+   "recall_at_0_5pct": 0.6914225941422594,
+   "precision_at_0_5pct": 0.15322206768660177,
+   "recall_at_1pct": 0.7562761506276151,
+   "precision_at_1pct": 0.08379694019471488,
+   "recall_at_2pct": 0.7719665271966527,
+   "precision_at_2pct": 0.042767732962447846
+  },
+  "Imbalance: class weights (balanced)": {
+   "pr_auc": 0.4692095934018897,
+   "roc_auc": 0.9765577093068274,
+   "gini": 0.9531154186136548,
+   "base_rate": 0.0011080306725143488,
+   "recall_at_0_5pct": 0.6558577405857741,
+   "precision_at_0_5pct": 0.14534075104311545,
+   "recall_at_1pct": 0.7133891213389121,
+   "precision_at_1pct": 0.07904496986555401,
+   "recall_at_2pct": 0.7688284518828452,
+   "precision_at_2pct": 0.04259388038942977
+  },
+  "Imbalance: none (case-control sample)": {
+   "pr_auc": 0.5209807830264569,
+   "roc_auc": 0.9763822756005515,
+   "gini": 0.9527645512011029,
+   "base_rate": 0.0011080306725143488,
+   "recall_at_0_5pct": 0.6642259414225942,
+   "precision_at_0_5pct": 0.14719517848864164,
+   "recall_at_1pct": 0.7280334728033473,
+   "precision_at_1pct": 0.08066759388038942,
+   "recall_at_2pct": 0.7646443514644351,
+   "precision_at_2pct": 0.04236207695873899
+  },
+  "Imbalance: SMOTE to 10%": {
+   "pr_auc": 0.537051617270102,
+   "roc_auc": 0.9783087948214322,
+   "gini": 0.9566175896428644,
+   "base_rate": 0.0011080306725143488,
+   "recall_at_0_5pct": 0.6841004184100419,
+   "precision_at_0_5pct": 0.15159944367176634,
+   "recall_at_1pct": 0.7343096234309623,
+   "precision_at_1pct": 0.08136300417246176,
+   "recall_at_2pct": 0.7824267782426778,
+   "precision_at_2pct": 0.04334724153917478
+  },
+  "Neural network (MLP 64-32)": {
+   "pr_auc": 0.3530808781156494,
+   "roc_auc": 0.9778006254226042,
+   "gini": 0.9556012508452083,
+   "base_rate": 0.0011080306725143488,
+   "recall_at_0_5pct": 0.6255230125523012,
+   "precision_at_0_5pct": 0.13861845155308297,
+   "recall_at_1pct": 0.696652719665272,
+   "precision_at_1pct": 0.07719054242002782,
+   "recall_at_2pct": 0.7437238493723849,
+   "precision_at_2pct": 0.04120305980528512
+  },
+  "Random Forest": {
+   "pr_auc": 0.49763028787247754,
+   "roc_auc": 0.9688347617553893,
+   "gini": 0.9376695235107786,
+   "base_rate": 0.0011080306725143488,
+   "recall_at_0_5pct": 0.6914225941422594,
+   "precision_at_0_5pct": 0.15322206768660177,
+   "recall_at_1pct": 0.747907949790795,
+   "precision_at_1pct": 0.08286972647195179,
+   "recall_at_2pct": 0.7751046025104602,
+   "precision_at_2pct": 0.042941585535465926
+  },
+  "Ensemble: rank-average (LGBM + XGB + RF)": {
+   "pr_auc": 0.5326720174777675,
+   "roc_auc": 0.9801359136447846,
+   "gini": 0.9602718272895692,
+   "base_rate": 0.0011080306725143488,
+   "recall_at_0_5pct": 0.6788702928870293,
+   "precision_at_0_5pct": 0.15044042651831246,
+   "recall_at_1pct": 0.7468619246861925,
+   "precision_at_1pct": 0.08275382475660639,
+   "recall_at_2pct": 0.7845188284518828,
+   "precision_at_2pct": 0.043463143254520165
+  }
+ },
+ "diff_vs_champion": {
+  "XGBoost monotone - LightGBM monotone (champion)": {
+   "pr_auc": [
+    -0.015173266758655268,
+    -0.022678137228136237,
+    -0.007522536791943699
+   ],
+   "roc_auc": [
+    1.3087511664511275e-05,
+    -0.0009052436622970893,
+    0.0009953078431034683
+   ],
+   "recall_at_0_5pct": [
+    0.0010460251046024993,
+    -0.012353704045110964,
+    0.01246966364000455
+   ],
+   "recall_at_1pct": [
+    -0.012552301255230103,
+    -0.021939263435550593,
+    -0.002624945572307187
+   ],
+   "recall_at_2pct": [
+    -0.009414225941422605,
+    -0.020049684562032596,
+    0.0
+   ]
+  },
+  "Extra Trees - LightGBM monotone (champion)": {
+   "pr_auc": [
+    -0.09398773819166234,
+    -0.11519261581269868,
+    -0.07442809007850379
+   ],
+   "roc_auc": [
+    -0.004886485795888018,
+    -0.006815277183685417,
+    -0.0029508811766834515
+   ],
+   "recall_at_0_5pct": [
+    0.024058577405857706,
+    0.008150325547360273,
+    0.04334271969963627
+   ],
+   "recall_at_1pct": [
+    0.007322175732217606,
+    -0.005316463924751896,
+    0.021030245920196783
+   ],
+   "recall_at_2pct": [
+    -0.006276150627615107,
+    -0.019706859037343906,
+    0.006360567525668938
+   ]
+  },
+  "Imbalance: class weights (balanced) - LightGBM monotone (champion)": {
+   "pr_auc": [
+    -0.06520397138664774,
+    -0.07743121475380328,
+    -0.05344307866164672
+   ],
+   "roc_auc": [
+    -0.0043881165559152,
+    -0.005906788525329589,
+    -0.002711650894107146
+   ],
+   "recall_at_0_5pct": [
+    -0.011506276150627603,
+    -0.028687707641196016,
+    0.006363745465883926
+   ],
+   "recall_at_1pct": [
+    -0.03556485355648542,
+    -0.05227514662167589,
+    -0.02093315548727745
+   ],
+   "recall_at_2pct": [
+    -0.009414225941422605,
+    -0.02225276016213652,
+    0.0021857490661686026
+   ]
+  },
+  "Imbalance: none (case-control sample) - LightGBM monotone (champion)": {
+   "pr_auc": [
+    -0.013432781375898872,
+    -0.02120054234854087,
+    -0.006663107219160251
+   ],
+   "roc_auc": [
+    -0.004563549655332566,
+    -0.005689204618810542,
+    -0.003394457667112788
+   ],
+   "recall_at_0_5pct": [
+    -0.003138075313807498,
+    -0.015476190476190437,
+    0.012663591700930813
+   ],
+   "recall_at_1pct": [
+    -0.02092050209205021,
+    -0.031240890527775084,
+    -0.010597014087038647
+   ],
+   "recall_at_2pct": [
+    -0.013598326359832713,
+    -0.023861498861498836,
+    -0.003171083287239593
+   ]
+  },
+  "Imbalance: SMOTE to 10% - LightGBM monotone (champion)": {
+   "pr_auc": [
+    0.002638061712279427,
+    -0.007358927306985418,
+    0.011919980562636583
+   ],
+   "roc_auc": [
+    -0.0026370310413105225,
+    -0.003863276615328559,
+    -0.0014773793994039498
+   ],
+   "recall_at_0_5pct": [
+    0.01673640167364021,
+    0.003628889761999359,
+    0.03199034356715176
+   ],
+   "recall_at_1pct": [
+    -0.014644351464435212,
+    -0.0273374249776529,
+    0.00104865905477281
+   ],
+   "recall_at_2pct": [
+    0.004184100418409997,
+    -0.009421687887362721,
+    0.015015525271692252
+   ]
+  },
+  "Neural network (MLP 64-32) - LightGBM monotone (champion)": {
+   "pr_auc": [
+    -0.1813327058771228,
+    -0.20802571253800606,
+    -0.15304640606519176
+   ],
+   "roc_auc": [
+    -0.003145199833279988,
+    -0.005134532846217894,
+    -0.0011000185096528782
+   ],
+   "recall_at_0_5pct": [
+    -0.04184100418410042,
+    -0.06788763218217317,
+    -0.018228530380476702
+   ],
+   "recall_at_1pct": [
+    -0.05230125523012552,
+    -0.07350856145412199,
+    -0.030928706309718
+   ],
+   "recall_at_2pct": [
+    -0.03451882845188292,
+    -0.05385844501606234,
+    -0.014477766287487093
+   ]
+  },
+  "Random Forest - LightGBM monotone (champion)": {
+   "pr_auc": [
+    -0.03678325383417158,
+    -0.04904142595392423,
+    -0.023514257953862885
+   ],
+   "roc_auc": [
+    -0.01211106410735352,
+    -0.014253893025706316,
+    -0.009923020041779479
+   ],
+   "recall_at_0_5pct": [
+    0.024058577405857706,
+    0.0073034589481484995,
+    0.040916076601223025
+   ],
+   "recall_at_1pct": [
+    -0.0010460251046024993,
+    -0.013104849335283386,
+    0.013488507231404979
+   ],
+   "recall_at_2pct": [
+    -0.003138075313807609,
+    -0.016082947723324113,
+    0.009352473137779416
+   ]
+  },
+  "Ensemble: rank-average (LGBM + XGB + RF) - LightGBM monotone (champion)": {
+   "pr_auc": [
+    -0.0017166637301000431,
+    -0.007904167865102181,
+    0.004402790496990719
+   ],
+   "roc_auc": [
+    -0.0008099279962806571,
+    -0.0015553476427951295,
+    -4.563889989211986e-05
+   ],
+   "recall_at_0_5pct": [
+    0.011506276150627603,
+    0.0004745254745254687,
+    0.023069690666795636
+   ],
+   "recall_at_1pct": [
+    -0.0020920502092049986,
+    -0.011973367608159709,
+    0.007258228362454341
+   ],
+   "recall_at_2pct": [
+    0.006276150627614996,
+    -0.002052387721792212,
+    0.01446279804983848
+   ]
+  }
+ },
+ "settings": {
+  "Extra Trees": {
+   "name": "Extra Trees",
+   "fit_and_score_seconds": 84.8,
+   "params": {
+    "bootstrap": "False",
+    "ccp_alpha": "0.0",
+    "criterion": "gini",
+    "max_features": "sqrt",
+    "min_impurity_decrease": "0.0",
+    "min_samples_leaf": "5",
+    "min_samples_split": "2",
+    "min_weight_fraction_leaf": "0.0",
+    "n_estimators": "200",
+    "n_jobs": "2",
+    "oob_score": "False",
+    "random_state": "42",
+    "warm_start": "False"
+   },
+   "n_features": 45
+  },
+  "Imbalance: class weights (balanced)": {
+   "name": "Imbalance: class weights (balanced)",
+   "fit_and_score_seconds": 29.0,
+   "train_rows": 261880,
+   "train_positives": 2530,
+   "n_trees": 300
+  },
+  "Imbalance: none (case-control sample)": {
+   "name": "Imbalance: none (case-control sample)",
+   "fit_and_score_seconds": 25.4,
+   "train_rows": 261880,
+   "train_positives": 2530,
+   "n_trees": 300
+  },
+  "Imbalance: SMOTE to 10%": {
+   "name": "Imbalance: SMOTE to 10%",
+   "fit_and_score_seconds": 29.4,
+   "train_rows": 285285,
+   "train_positives": 25935,
+   "n_trees": 300,
+   "smote_seconds": 0.2
+  },
+  "Neural network (MLP 64-32)": {
+   "name": "Neural network (MLP 64-32)",
+   "fit_and_score_seconds": 32.7,
+   "params": {
+    "activation": "relu",
+    "alpha": "0.0001",
+    "batch_size": "512",
+    "beta_1": "0.9",
+    "beta_2": "0.999",
+    "early_stopping": "True",
+    "epsilon": "1e-08",
+    "hidden_layer_sizes": "(64, 32)",
+    "learning_rate": "constant",
+    "learning_rate_init": "0.001",
+    "max_fun": "15000",
+    "max_iter": "40",
+    "momentum": "0.9",
+    "n_iter_no_change": "5",
+    "nesterovs_momentum": "True",
+    "power_t": "0.5",
+    "random_state": "42",
+    "shuffle": "True",
+    "solver": "adam",
+    "tol": "0.0001",
+    "validation_fraction": "0.1",
+    "warm_start": "False"
+   },
+   "n_features": 45
+  },
+  "Random Forest": {
+   "name": "Random Forest",
+   "fit_and_score_seconds": 153.8,
+   "params": {
+    "bootstrap": "True",
+    "ccp_alpha": "0.0",
+    "criterion": "gini",
+    "max_features": "sqrt",
+    "min_impurity_decrease": "0.0",
+    "min_samples_leaf": "5",
+    "min_samples_split": "2",
+    "min_weight_fraction_leaf": "0.0",
+    "n_estimators": "200",
+    "n_jobs": "2",
+    "oob_score": "False",
+    "random_state": "42",
+    "warm_start": "False"
+   },
+   "n_features": 45
+  }
+ }
+}

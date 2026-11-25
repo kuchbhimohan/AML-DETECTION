@@ -1,0 +1,127 @@
+{
+ "pandas_version": "2.3.3",
+ "split": {
+  "train": {
+   "rows": 3248921,
+   "laundering": 2530,
+   "rate_pct": 0.0779,
+   "first": "2022-09-01 00:00:00",
+   "last": "2022-09-06 23:59:00"
+  },
+  "val": {
+   "rows": 965524,
+   "laundering": 1036,
+   "rate_pct": 0.1073,
+   "first": "2022-09-07 00:00:00",
+   "last": "2022-09-08 23:59:00"
+  },
+  "test": {
+   "rows": 862792,
+   "laundering": 956,
+   "rate_pct": 0.1108,
+   "first": "2022-09-09 00:00:00",
+   "last": "2022-09-10 23:59:00"
+  },
+  "tail": {
+   "rows": 1108,
+   "laundering": 655,
+   "rate_pct": 59.1155,
+   "first": "2022-09-11 00:05:00",
+   "last": "2022-09-18 16:18:00"
+  }
+ },
+ "usd_rates": {
+  "US Dollar": 1.0,
+  "Australian Dollar": 0.707814230640309,
+  "Bitcoin": 11881.503549370207,
+  "Brazil Real": 0.17710085974093714,
+  "Canadian Dollar": 0.7579776981396079,
+  "Euro": 1.1717834513422054,
+  "Mexican Peso": 0.04729675713671224,
+  "Ruble": 0.012852736350373598,
+  "Rupee": 0.013615817169108153,
+  "Saudi Riyal": 0.26658846778824696,
+  "Shekel": 0.2961207735161849,
+  "Swiss Franc": 1.0928961748468229,
+  "UK Pound": 1.2916559027714338,
+  "Yen": 0.009487667213306494,
+  "Yuan": 0.14930721219794327
+ },
+ "currencies_without_rate": [],
+ "feature_build_seconds": 125.9,
+ "spot_check": {
+  "rows": 300,
+  "features": 4,
+  "mismatches": 0
+ },
+ "files": {
+  "train_sample.parquet": {
+   "rows": 261880,
+   "laundering": 2530,
+   "MB": 16.6
+  },
+  "val_sample.parquet": {
+   "rows": 77971,
+   "laundering": 1036,
+   "MB": 5.4
+  },
+  "val_full.parquet": {
+   "rows": 965524,
+   "laundering": 1036,
+   "MB": 54.9
+  },
+  "test_full.parquet": {
+   "rows": 862792,
+   "laundering": 956,
+   "MB": 49.4
+  },
+  "tail.parquet": {
+   "rows": 1108,
+   "laundering": 655,
+   "MB": 0.1
+  }
+ },
+ "negative_rate": 0.08,
+ "seed": 42,
+ "features": [
+  "s_out_cnt_1h",
+  "s_out_uniq_1h",
+  "s_out_cnt_24h",
+  "s_out_uniq_24h",
+  "s_out_cnt_7d",
+  "s_out_uniq_7d",
+  "s_out_usd_24h",
+  "s_out_usd_7d",
+  "s_amt_z_7d",
+  "s_amt_ratio_7d",
+  "s_hours_since_prev_out",
+  "r_in_cnt_1h",
+  "r_in_uniq_1h",
+  "r_in_cnt_24h",
+  "r_in_uniq_24h",
+  "r_in_cnt_7d",
+  "r_in_uniq_7d",
+  "r_in_usd_24h",
+  "s_in_cnt_24h",
+  "s_in_uniq_24h",
+  "s_in_usd_24h",
+  "r_out_cnt_24h",
+  "r_out_uniq_24h",
+  "s_passthrough_ratio_24h",
+  "pair_prev_cnt",
+  "pair_first_time",
+  "reverse_flow_7d",
+  "s_age_hours",
+  "r_age_hours",
+  "log_amount_usd",
+  "round_amount",
+  "is_ach",
+  "cross_bank",
+  "self_transfer",
+  "cross_currency",
+  "hour",
+  "weekday",
+  "payment_format",
+  "payment_currency"
+ ]
+}

@@ -1,0 +1,17 @@
+{
+ "dropped": [
+  "s_age_hours",
+  "r_age_hours"
+ ],
+ "evaluated_on": "validation (full)",
+ "with": {
+  "pr_auc": 0.5739941470171551,
+  "recall_at_1pct": 0.8088803088803089,
+  "best_iteration": 748
+ },
+ "without": {
+  "pr_auc": 0.5223811021695071,
+  "recall_at_1pct": 0.8011583011583011,
+  "best_iteration": 627
+ }
+}
