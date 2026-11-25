@@ -38,6 +38,8 @@ def load():
 
 
 alerts, R, CURVES, PROFILE, EXTRA, EXPL, ABL, META, CAL_BINS = load()
+ALERT_LABELS = {int(r): f"#{r} · {b} risk · ${a:,.0f} {f}" for r, b, a, f in
+                zip(alerts["rank"], alerts["band"], alerts["amount_usd"], alerts["payment_format"])}
 # reason types (feature keys of each alert's top-3 reasons), aligned with alerts.index
 REASON_TYPES = pd.Series([[r["feature"] for r in json.loads(s)] for s in alerts["reasons_json"]], index=alerts.index)
 N_TX, N_POS, DAYS = R["meta"]["test_rows"], R["meta"]["test_laundering"], CURVES["days"]
@@ -205,6 +207,7 @@ def alert_queue():
     sel = event.selection.rows if event and event.selection else []
     if sel:
         st.session_state["selected_rank"] = int(view.iloc[sel[0]]["Rank"])
+        st.session_state["inv_rank"] = st.session_state["selected_rank"]   # Investigate's selectbox is not rendered here
         c1, c2 = st.columns([3, 1])
         c1.success(f"Alert #{st.session_state['selected_rank']} selected.")
         c2.button("Investigate →", type="primary", width="stretch",
@@ -222,11 +225,13 @@ def explainer():
 
 def investigate():
     ranks = alerts["rank"].tolist()
-    default = st.session_state.get("selected_rank", ranks[0])
-    rank = st.selectbox("Alert", ranks, index=ranks.index(default) if default in ranks else 0,
-                        format_func=lambda r: f"#{r} · {alerts.loc[alerts['rank'] == r, 'band'].iat[0]} risk · "
-                                              f"${alerts.loc[alerts['rank'] == r, 'amount_usd'].iat[0]:,.0f} "
-                                              f"{alerts.loc[alerts['rank'] == r, 'payment_format'].iat[0]}")
+    # A stable widget key: computing `index=` on every run made Streamlit treat the
+    # selectbox as a new widget whenever the selection changed, silently discarding
+    # every second user choice. `selected_rank` persists the choice across pages.
+    if st.session_state.get("inv_rank") not in ALERT_LABELS:
+        st.session_state["inv_rank"] = st.session_state.get("selected_rank", ranks[0])
+    rank = st.selectbox("Alert", ranks, key="inv_rank", format_func=ALERT_LABELS.get,
+                        on_change=lambda: st.session_state.update(selected_rank=st.session_state["inv_rank"]))
     st.session_state["selected_rank"] = rank
     row = alerts[alerts["rank"] == rank].iloc[0]
     reasons = json.loads(row["reasons_json"])
